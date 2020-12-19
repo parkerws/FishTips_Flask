@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block styles %}
+    
+
+<link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+crossorigin=""/>
+{{super()}}
+{% endblock %}
+
+
+{% block app_content %}
+<div class="input-group mb-3">
+    <input type="text" id="address" class="form-control" placeholder="Enter location"/>
+    <span class="input-group-btn">
+        <button class="btn btn-primary " id="addressFinder">Find Location</button>
+        <button class="btn btn-secondary" id="locator">Get Current Location</button>
+    </span>
+</div>
+{% endblock %}
+{% block map_content %}
+<div id="mapid"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@0.1.1"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+   <script src="{{url_for('static', filename='map.js')}}"></script>
+   
+
+{% endblock %}
