@@ -1,8 +1,6 @@
 
 let myMap = L.map('mapid').setView([34.552769, -77.397209], 10);
 
-
-
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
@@ -17,43 +15,33 @@ const stations = fetch('/map').then(res => res.json()).then(data => {
         .on('popupopen', fetchTides)
         .addTo(myMap));
         
-})
+}).catch(err => alert(err + 'Unable to fetch stations. Refresh the page to retry.'))
 
 const addChartData = (chart, label, data) => {
     console.log(label[0])
     console.log(data)
-    //chart.data.labels = label
     console.log(chart)
     chart.data.datasets.push({'data': data})
     chart.options.scales.xAxes[0].time.min = label[0]
     chart.options.scales.xAxes[0].time.max = label.slice(-1)[0]
-    //chart.datasets.forEach((dataset) => {
-    //    dataset.data.push(data)
-    //});
+
     chart.update();
 }
 
 const removeChartData = (chart) => {
-    //chart.data.labels.pop()
-    
     chart.data.datasets.pop()
-    //chart.data.datasets.forEach(dataset => {
-    //    dataset.data.pop();
-    //});
     chart.update();
     console.log(chart)
 }
 
 const fetchTides = (event) => {
     console.log(event)
-    var ctx = event.target._popup._contentNode.lastChild
-    //document.querySelector('canvas').getContext('2d')
+    var ctx = event.target._popup._contentNode.lastChild;
     console.log(ctx)
     let chart = new Chart(ctx, {
         
         type: 'line',
         data: {
-            //labels: ['h','l','h','l'],
             datasets: [{
                 data: [{
                     t: "2020-12-18T03:45",
@@ -137,9 +125,7 @@ const fetchTides = (event) => {
     //console.log(tideData)
     //console.log(popup.getContent().split(' ')[2])
 }
-const resetPopup = () => {
-    
-}
+
 const getCurrentLocation = (e) => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition)
@@ -152,12 +138,19 @@ const showPosition = position => {
     alert(`Latitude: ${position.coords.latitude} Longitude:  ${position.coords.longitude}`)
 }
 
-const getLocation = () => {
+const getLocation = (e) => {
+    let address = document.querySelector('#address').value
+    console.log(address)
     const location = encodeURIComponent(address)
     console.log(location)
-    const response = fetch(`/map/convert_location/${location}`).then(res => res.json()).then(data => console.log(data))
+    const response = fetch(`/map/convert_location/${location}`).then(res => res.json()).then(data => {
+        let parsedData = JSON.parse(data)
+        console.log(parsedData.results[0].geometry.location)
+        myMap.setView(parsedData.results[0].geometry.location, 10)
+
+    })
 }
-let address = document.querySelector('#address').value
+//let address = document.querySelector('#address').value
 const addressFinder = document.querySelector('#addressFinder');
 addressFinder.addEventListener('click', getLocation)
 const locator = document.querySelector('#locator')
