@@ -15,29 +15,24 @@ const stations = fetch('/map').then(res => res.json()).then(data => {
         .on('popupopen', fetchTides)
         .addTo(myMap));
         
-}).catch(err => alert(err + 'Unable to fetch stations. Refresh the page to retry.'))
+}).catch(err => alert(err + 'Unable to fetch stations. Refresh the page to retry.'));
 
 const addChartData = (chart, label, data) => {
-    console.log(label[0])
-    console.log(data)
-    console.log(chart)
-    chart.data.datasets.push({'data': data})
-    chart.options.scales.xAxes[0].time.min = label[0]
-    chart.options.scales.xAxes[0].time.max = label.slice(-1)[0]
-
+    chart.data.datasets.push({'data': data});
+    chart.options.scales.xAxes[0].time.min = label[0];
+    chart.options.scales.xAxes[0].time.max = label.slice(-1)[0];
     chart.update();
-}
+};
 
 const removeChartData = (chart) => {
-    chart.data.datasets.pop()
+    chart.data.datasets.pop();
     chart.update();
-    console.log(chart)
-}
+};
 
 const fetchTides = (event) => {
-    console.log(event)
+    console.log(event);
     var ctx = event.target._popup._contentNode.lastChild;
-    console.log(ctx)
+    console.log(ctx);
     let chart = new Chart(ctx, {
         
         type: 'line',
@@ -99,60 +94,56 @@ const fetchTides = (event) => {
                 }]}
         }
     
-    })
-    const [labels, tides] = [[], []]
+    });
+    const [labels, tides] = [[], []];
     
-    let id = event.target._popup._contentNode.lastChild.attributes[1].nodeValue
-    console.log(id)
+    let id = event.target._popup._contentNode.lastChild.attributes[1].nodeValue;
     fetch(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=${id}&product=predictions&datum=MTL&time_zone=lst&interval=hilo&units=english&format=json`)
         .then(res => res.json())
         .then(data => {
             data['predictions'].forEach(tide => {
-            labels.push(tide['t'])
-            tides.push({'t': moment(tide['t']).format(), 'y':tide['v']})
-            })
-            removeChartData(chart)
-            addChartData(chart, labels, tides)
-            
-            
-            
-        
-        }).catch((error) => console.error(error + ": cannot fetch tides"))
+            labels.push(tide['t']);
+            tides.push({'t': moment(tide['t']).format(), 'y':tide['v']});
+            });
+            removeChartData(chart);
+            addChartData(chart, labels, tides);
+        }).catch((error) => console.error(error + ": cannot fetch tides"));
 
 
     
     
     //console.log(tideData)
     //console.log(popup.getContent().split(' ')[2])
-}
+};
 
 const getCurrentLocation = (e) => {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition)
+        navigator.geolocation.getCurrentPosition(showPosition);
     } else {
-        alert('Geolocation not available')
+        alert('Geolocation not available');
     }
-}
+};
 
 const showPosition = position => {
-    alert(`Latitude: ${position.coords.latitude} Longitude:  ${position.coords.longitude}`)
-}
+    alert(`Latitude: ${position.coords.latitude} Longitude:  ${position.coords.longitude}`);
+};
 
 const getLocation = (e) => {
-    let address = document.querySelector('#address').value
-    console.log(address)
-    const location = encodeURIComponent(address)
-    console.log(location)
+    let address = document.querySelector('#address').value;
+    console.log(address);
+    const location = encodeURIComponent(address);
+    console.log(location);
     const response = fetch(`/map/convert_location/${location}`).then(res => res.json()).then(data => {
-        let parsedData = JSON.parse(data)
-        console.log(parsedData.results[0].geometry.location)
-        myMap.setView(parsedData.results[0].geometry.location, 10)
+        let parsedData = JSON.parse(data);
+        console.log(parsedData.results[0].geometry.location);
+        myMap.setView(parsedData.results[0].geometry.location, 10);
 
-    })
-}
+    });
+};
+
 //let address = document.querySelector('#address').value
 const addressFinder = document.querySelector('#addressFinder');
-addressFinder.addEventListener('click', getLocation)
-const locator = document.querySelector('#locator')
-locator.addEventListener('click', getCurrentLocation)
+addressFinder.addEventListener('click', getLocation);
+const locator = document.querySelector('#locator');
+locator.addEventListener('click', getCurrentLocation);
 

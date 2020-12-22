@@ -3,7 +3,13 @@
 {% block title %}
     {% if title %}{{ title }} - FishTips{% else %}Welcome to FishTips!{% endif %}
 {% endblock %}
+{% block styles %}
 
+<link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+
+{{super()}}
+
+{% endblock %}
 
 {% block navbar %}
 <nav class="navbar navbar-default">
@@ -54,5 +60,7 @@
 
 {% block scripts %}
 {{ super() }}
+<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js'></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% endblock %}

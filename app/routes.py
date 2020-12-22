@@ -81,4 +81,27 @@ def convert_location(location):
         print(location)
         google_endpoint = "https://maps.googleapis.com/maps/api/geocode/json?address="
         response = requests.get(google_endpoint+location+'&key='+app.config.get('GOOGLE_MAPS_API_KEY')).text
+        print(response)
         return jsonify(response)
+
+@app.route('/map/zip_search')
+def zip_search():
+    if request.method == 'GET':
+        zip_code = request.args.get('location')
+        print(zip_code)
+        openmap_endpoint = "https://api.openweathermap.org/data/2.5/weather?zip="
+        query = openmap_endpoint + zip_code + '&appid=' + app.config.get('OPENMAP_API_KEY') + "&units=imperial"
+        print(query)
+        response = requests.get(query).text
+        print(response)
+        return jsonify(response)
+
+@app.route('/map/lat_lng_search')
+def lat_lng_search():
+    if request.method == 'GET':
+        lat = request.args.get('lat')
+        lon = request.args.get('lng')
+        print(lat + ' ' + lon)
+        openmap_endpoint = 'api.openweathermap.org/data/2.5/weather?'
+        #response = requests.get(f'{openmap_endpoint}lat={lat}&lon={lon}&appid={app.config.get('OPENMAP_API_KEY')}')
+        
