@@ -144,6 +144,6 @@ const getLocation = (e) => {
 //let address = document.querySelector('#address').value
 const addressFinder = document.querySelector('#addressFinder');
 addressFinder.addEventListener('click', getLocation);
-const locator = document.querySelector('#locator');
-locator.addEventListener('click', getCurrentLocation);
+//const locator = document.querySelector('#locator');
+//locator.addEventListener('click', getCurrentLocation);
 

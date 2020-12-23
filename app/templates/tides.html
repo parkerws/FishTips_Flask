@@ -15,7 +15,6 @@ crossorigin=""/>
     <input type="text" id="address" class="form-control" placeholder="Enter location"/>
     <span class="input-group-btn">
         <button class="btn btn-primary " id="addressFinder">Find Location</button>
-        <button class="btn btn-secondary" id="locator">Get Current Location</button>
     </span>
 </div>
 {% endblock %}
@@ -24,6 +23,7 @@ crossorigin=""/>
 {% endblock %}
 
 {% block scripts %}
+{{super()}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@0.1.1"></script>
