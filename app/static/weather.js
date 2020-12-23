@@ -12,6 +12,7 @@ const sunrise = document.querySelector('#sunrise');
 const sunset = document.querySelector('#sunset');
 const weatherImage = document.querySelector('#weatherImage')
 
+
 const form = document.querySelector("form");
 form.addEventListener("submit", e => {
     e.preventDefault();
